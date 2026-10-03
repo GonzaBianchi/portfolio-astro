@@ -1,0 +1,87 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  /** Comando que se muestra arriba del título, estilo terminal. */
+  cmd: string;
+  index: string;
+}
+
+const { id, title, cmd, index } = Astro.props;
+---
+
+<section id={id} class="section">
+  <div class="container">
+    <header class="head">
+      <p class="cmd"><span class="sigil">$</span> {cmd}</p>
+      <h2 class="title">
+        <span class="index">{index}</span>
+        {title}
+      </h2>
+      <span class="rule" aria-hidden="true"></span>
+    </header>
+
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: clamp(3rem, 8vw, 5.5rem);
+    scroll-margin-top: 4rem;
+  }
+
+  .head {
+    margin-bottom: 2rem;
+  }
+
+  .cmd {
+    margin: 0 0 0.35rem;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+  .sigil {
+    color: var(--accent);
+  }
+
+  .title {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .index {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  .rule {
+    display: block;
+    height: 1px;
+    margin-top: 1rem;
+    background: linear-gradient(
+      to right,
+      var(--border-strong),
+      var(--border) 40%,
+      transparent
+    );
+  }
+
+  /* ---------- Estética cyber ---------- */
+  :global(:root[data-skin='cyber']) .index {
+    color: var(--accent-2);
+  }
+
+  :global(:root[data-skin='cyber']) .rule {
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      var(--accent),
+      var(--accent-2) 32%,
+      var(--info) 58%,
+      transparent 92%
+    );
+    box-shadow: var(--neon);
+  }
+</style>

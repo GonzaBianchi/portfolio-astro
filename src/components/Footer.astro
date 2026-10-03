@@ -1,0 +1,124 @@
+---
+import Icon from './Icon.astro';
+import { profile } from '../data/profile';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container inner">
+    <p class="line">
+      <span class="c">#</span> {profile.name} · {year} · {t('footer.rights')}
+    </p>
+
+    <ul class="socials">
+      {
+        profile.socials.map((s) => (
+          <li>
+            <a
+              href={s.url}
+              aria-label={s.label}
+              title={s.label}
+              rel={s.url.startsWith('http') ? 'noopener noreferrer me' : undefined}
+              target={s.url.startsWith('http') ? '_blank' : undefined}
+            >
+              <Icon name={s.icon as 'github' | 'linkedin' | 'mail'} size={16} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="line built">
+      <span class="c">#</span> {t('footer.built')}
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    position: relative;
+    z-index: 2;
+    margin-top: 4rem;
+    border-top: 1px solid var(--border);
+    background: var(--bg-soft);
+  }
+
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1.5rem;
+  }
+
+  .line {
+    margin: 0;
+    font-size: 0.76rem;
+    color: var(--text-dim);
+  }
+
+  .c {
+    color: var(--accent);
+  }
+
+  .built {
+    width: 100%;
+    order: 3;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--border);
+  }
+
+  .socials {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .socials a {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: color 0.18s ease, border-color 0.18s ease;
+  }
+  .socials a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* ---------- Estética cyber ---------- */
+  :global(:root[data-skin='cyber']) .footer {
+    border-top-color: transparent;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--accent) 8%, var(--bg-soft)),
+      var(--bg-soft) 60%
+    );
+  }
+  :global(:root[data-skin='cyber']) .footer::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--info) 20%,
+      var(--accent-2) 50%,
+      var(--accent) 80%,
+      transparent
+    );
+  }
+  :global(:root[data-skin='cyber']) .socials a:hover {
+    color: var(--accent-2);
+    border-color: var(--accent-2);
+    box-shadow: var(--neon);
+  }
+</style>

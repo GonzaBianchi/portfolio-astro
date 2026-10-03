@@ -1,0 +1,124 @@
+---
+import { profile } from '../data/profile';
+import { getLangFromUrl, pick } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const paragraphs = profile.about[lang];
+---
+
+<div class="wrap">
+  <div class="prose">
+    {paragraphs.map((p) => <p>{p}</p>)}
+  </div>
+
+  <aside class="panel" aria-label={lang === 'es' ? 'Datos' : 'Facts'}>
+    <p class="panel__head">
+      <span class="sigil">$</span> whoami --verbose
+    </p>
+    <dl class="facts">
+      {
+        profile.facts.map((f) => (
+          <div class="fact">
+            <dt>{f.key}</dt>
+            <dd>{f.value}</dd>
+          </div>
+        ))
+      }
+      <div class="fact">
+        <dt>location</dt>
+        <dd>{pick(profile.location, lang)}</dd>
+      </div>
+    </dl>
+  </aside>
+</div>
+
+<style>
+  .wrap {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  @media (min-width: 860px) {
+    .wrap {
+      grid-template-columns: 1.4fr 1fr;
+      gap: 3rem;
+    }
+  }
+
+  .prose p {
+    max-width: 62ch;
+    color: var(--text-dim);
+  }
+  .prose p:first-child {
+    color: var(--text);
+  }
+
+  .panel {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .panel__head {
+    margin: 0;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+  .sigil {
+    color: var(--accent);
+  }
+
+  .facts {
+    margin: 0;
+    padding: 0.4rem 0.9rem 0.9rem;
+    font-size: 0.8rem;
+  }
+
+  .fact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-block: 0.45rem;
+    border-bottom: 1px dashed var(--border);
+  }
+  .fact:last-child {
+    border-bottom: 0;
+  }
+
+  .fact dt {
+    min-width: 5.5rem;
+    color: var(--accent);
+  }
+  .fact dt::after {
+    content: ':';
+    color: var(--text-dim);
+  }
+
+  .fact dd {
+    margin: 0;
+    color: var(--text-dim);
+  }
+
+  /* ---------- Estética cyber ---------- */
+  :global(:root[data-skin='cyber']) .panel {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow), var(--neon);
+  }
+  :global(:root[data-skin='cyber']) .panel__head {
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 18%, var(--surface-2)),
+      var(--surface-2) 70%
+    );
+    color: var(--text);
+  }
+  :global(:root[data-skin='cyber']) .fact dt {
+    color: var(--info);
+  }
+</style>

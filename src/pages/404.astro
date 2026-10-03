@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<BaseLayout title={`404 — ${t('404.title')}`}>
+  <div class="container wrap">
+    <p class="code">
+      <span class="sigil">$</span> curl -I {Astro.url.pathname}
+    </p>
+    <h1>404</h1>
+    <p class="msg">{t('404.title')}</p>
+    <p class="sub">{t('404.text')}</p>
+    <a class="btn btn--primary" href={localizePath('/', lang)}>
+      {t('404.home')}
+    </a>
+  </div>
+</BaseLayout>
+
+<style>
+  .wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 60dvh;
+    padding-block: 4rem;
+  }
+
+  .code {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+  .sigil {
+    color: var(--accent);
+  }
+
+  h1 {
+    font-size: clamp(3.5rem, 16vw, 7rem);
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .msg {
+    margin: 0 0 0.25rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .sub {
+    color: var(--text-dim);
+  }
+
+  /* ---------- Estética cyber ---------- */
+  :global(:root[data-skin='cyber']) h1 {
+    text-shadow: -3px 0 0 rgba(0, 229, 255, 0.5),
+      3px 0 0 rgba(252, 238, 10, 0.45), 0 0 44px rgba(255, 47, 185, 0.45);
+  }
+  :global(:root[data-skin='cyber'][data-theme='light']) h1 {
+    text-shadow: -2px 0 0 rgba(0, 130, 190, 0.3),
+      2px 0 0 rgba(138, 109, 0, 0.3);
+  }
+</style>

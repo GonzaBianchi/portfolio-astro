@@ -1,0 +1,458 @@
+@import '@fontsource-variable/jetbrains-mono';
+
+/* ============================================================
+   Tokens — dos ejes independientes:
+     data-skin  : 'terminal' (por defecto) | 'cyber'
+     data-theme : 'dark' (por defecto)     | 'light'
+   El orden importa: los bloques cyber van después de los
+   terminal para ganarles a igual especificidad.
+   ============================================================ */
+
+/* --- terminal / oscuro (default) --- */
+:root {
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace;
+
+  --bg: #0a0e0a;
+  --bg-soft: #0d130d;
+  --surface: #101710;
+  --surface-2: #141d15;
+  --border: #1e2c20;
+  --border-strong: #2c4030;
+
+  --text: #d8e6da;
+  --text-dim: #8fa894;
+  --muted: #7dd3a8;
+
+  --accent: #00ff9c;
+  --accent-dim: #00c97b;
+  --accent-glow: rgba(0, 255, 156, 0.16);
+  --accent-contrast: #04150c;
+  --accent-2: #ffb000;
+
+  --warn: #ffb000;
+  --danger: #ff5f56;
+  --info: #56b6ff;
+
+  /* Fondo neutro del marco de las capturas: casi gris a propósito, para
+     que una captura oscura no choque con la página. */
+  --mat: #1b1e1c;
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 16px 40px -24px rgba(0, 0, 0, 0.9);
+  --neon: none;
+  --neon-strong: none;
+  --radius: 6px;
+  --maxw: 1080px;
+  --grid-line: rgba(0, 255, 156, 0.045);
+
+  color-scheme: dark;
+}
+
+/* --- terminal / claro --- */
+:root[data-theme='light'] {
+  --bg: #f4f6f2;
+  --bg-soft: #eef1ea;
+  --surface: #ffffff;
+  --surface-2: #f7f9f5;
+  --border: #d9e0d6;
+  --border-strong: #bcc9b8;
+
+  --text: #16211a;
+  --text-dim: #5c6b60;
+  --muted: #4a5a50;
+
+  --accent: #0a7d4f;
+  --accent-dim: #0b6942;
+  --accent-glow: rgba(10, 125, 79, 0.1);
+  --accent-contrast: #ffffff;
+  --accent-2: #a35c00;
+
+  --warn: #a35c00;
+  --danger: #c0392b;
+  --info: #0b6bab;
+
+  --mat: #e9eae8;
+
+  --shadow: 0 1px 2px rgba(20, 40, 28, 0.06),
+    0 14px 32px -22px rgba(20, 40, 28, 0.4);
+  --grid-line: rgba(10, 125, 79, 0.06);
+
+  color-scheme: light;
+}
+
+/* --- cyber / oscuro: Night City de noche --- */
+:root[data-skin='cyber'] {
+  --bg: #08040f;
+  --bg-soft: #0d0619;
+  --surface: #150b24;
+  --surface-2: #1d1032;
+  --border: #371a55;
+  --border-strong: #5c2688;
+
+  --text: #f2e9ff;
+  --text-dim: #a98fd0;
+  --muted: #d6a8ff;
+
+  --accent: #ff2fb9;
+  --accent-dim: #d8189a;
+  --accent-glow: rgba(255, 47, 185, 0.18);
+  --accent-contrast: #12020b;
+  --accent-2: #fcee0a;
+
+  --warn: #fcee0a;
+  --danger: #ff3864;
+  --info: #00e5ff;
+
+  --mat: #1f1b27;
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.6),
+    0 18px 44px -26px rgba(255, 47, 185, 0.55);
+  --neon: 0 0 14px -2px var(--accent-glow);
+  --neon-strong: 0 0 26px -6px var(--accent);
+  --radius: 2px;
+  --grid-line: rgba(255, 47, 185, 0.06);
+
+  color-scheme: dark;
+}
+
+/* --- cyber / claro: la misma paleta, de día --- */
+:root[data-skin='cyber'][data-theme='light'] {
+  --bg: #f7f1fb;
+  --bg-soft: #f0e6f8;
+  --surface: #ffffff;
+  --surface-2: #faf3ff;
+  --border: #e2d1ef;
+  --border-strong: #bf9edb;
+
+  --text: #1c0b28;
+  --text-dim: #61497a;
+  --muted: #7a3fb0;
+
+  --accent: #b8006e;
+  --accent-dim: #91005a;
+  --accent-glow: rgba(184, 0, 110, 0.1);
+  --accent-contrast: #ffffff;
+  --accent-2: #8a6d00;
+
+  --warn: #8a6d00;
+  --danger: #c0004a;
+  --info: #006c9c;
+
+  --mat: #eeebf1;
+
+  --shadow: 0 1px 2px rgba(50, 10, 60, 0.07),
+    0 14px 34px -22px rgba(120, 20, 110, 0.45);
+  --neon: 0 0 12px -4px var(--accent-glow);
+  --neon-strong: 0 0 20px -8px var(--accent);
+  --radius: 2px;
+  --grid-line: rgba(184, 0, 110, 0.07);
+
+  color-scheme: light;
+}
+
+/* ============================================================
+   Reset / base
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  -webkit-text-size-adjust: 100%;
+  /* Permite animar hacia `auto`: lo usa el acordeón de proyectos. */
+  interpolate-size: allow-keywords;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 44px 44px;
+  background-position: center top;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Neblina de neón detrás de la grilla. */
+:root[data-skin='cyber'] body {
+  background-image:
+    radial-gradient(
+      ellipse 85% 55% at 12% -12%,
+      rgba(255, 47, 185, 0.2),
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 70% 45% at 92% 6%,
+      rgba(0, 229, 255, 0.14),
+      transparent 64%
+    ),
+    radial-gradient(
+      ellipse 75% 45% at 50% 104%,
+      rgba(150, 60, 255, 0.16),
+      transparent 66%
+    ),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+  background-attachment: fixed, fixed, fixed, scroll, scroll;
+}
+
+:root[data-skin='cyber'][data-theme='light'] body {
+  background-image:
+    radial-gradient(
+      ellipse 85% 55% at 12% -12%,
+      rgba(255, 47, 185, 0.1),
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 70% 45% at 92% 6%,
+      rgba(0, 180, 220, 0.09),
+      transparent 64%
+    ),
+    radial-gradient(
+      ellipse 75% 45% at 50% 104%,
+      rgba(150, 60, 255, 0.09),
+      transparent 66%
+    ),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+  background-attachment: fixed, fixed, fixed, scroll, scroll;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* En cyber los títulos gritan: mayúsculas anchas y halo de neón. */
+:root[data-skin='cyber'] h1,
+:root[data-skin='cyber'] h2 {
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+:root[data-skin='cyber']:not([data-theme='light']) h2 {
+  text-shadow: 0 0 22px rgba(255, 47, 185, 0.3);
+}
+
+h1 {
+  font-size: clamp(1.9rem, 5.5vw, 3.1rem);
+}
+h2 {
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+}
+h3 {
+  font-size: 1.05rem;
+}
+
+p {
+  margin: 0 0 1rem;
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-soft);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dim);
+}
+:root[data-skin='cyber'] ::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  background: linear-gradient(180deg, var(--accent), var(--info));
+}
+
+/* ============================================================
+   Utilidades compartidas
+   ============================================================ */
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2rem);
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  padding: 0.6rem 1rem;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 700;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+/* Prompt de terminal reutilizable: <span class="prompt">$</span> */
+.prompt::before {
+  content: '$ ';
+  color: var(--accent);
+}
+
+.mono-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--surface-2);
+  white-space: nowrap;
+}
+:root[data-skin='cyber'] .tag {
+  border-radius: 0;
+  border-color: var(--border-strong);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease,
+    background-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+.btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+.btn--primary:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent-dim);
+  color: var(--accent-contrast);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+:root[data-skin='cyber'] .btn {
+  font-size: 0.78rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+:root[data-skin='cyber'] .btn:hover {
+  border-color: var(--accent-2);
+  color: var(--accent-2);
+  box-shadow: var(--neon);
+}
+:root[data-skin='cyber'] .btn--primary {
+  background: linear-gradient(
+    115deg,
+    var(--accent) 0%,
+    var(--accent-dim) 55%,
+    color-mix(in srgb, var(--info) 60%, var(--accent)) 100%
+  );
+  border-color: transparent;
+  box-shadow: var(--neon-strong);
+}
+:root[data-skin='cyber'] .btn--primary:hover {
+  background: linear-gradient(115deg, var(--accent-2) 0%, var(--accent) 70%);
+  border-color: transparent;
+  color: var(--accent-contrast);
+  box-shadow: 0 0 30px -8px var(--accent-2);
+}
+
+.blink {
+  animation: blink 1.05s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

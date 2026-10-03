@@ -1,0 +1,82 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+---
+
+<button id="skin-toggle" class="toggle" type="button" aria-label={label} title={label}>
+  <span class="icon icon--zap"><Icon name="zap" size={15} /></span>
+  <span class="icon icon--term"><Icon name="terminal" size={15} /></span>
+</button>
+
+<style>
+  .toggle {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: color 0.18s ease, border-color 0.18s ease,
+      box-shadow 0.18s ease;
+  }
+
+  .toggle:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  :global(:root[data-skin='cyber']) .toggle {
+    color: var(--accent-2);
+    border-color: var(--border-strong);
+    box-shadow: var(--neon);
+  }
+  :global(:root[data-skin='cyber']) .toggle:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .icon {
+    grid-area: 1 / 1;
+    display: grid;
+    place-items: center;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  /* Terminal: se ve el rayo (acción = pasar a cyber). Cyber: la terminal. */
+  :global(:root[data-skin='cyber']) .icon--zap,
+  :global(:root:not([data-skin='cyber'])) .icon--term {
+    opacity: 0;
+    transform: scale(0.6) rotate(-45deg);
+  }
+</style>
+
+<script>
+  const KEY = 'skin';
+  const root = document.documentElement;
+
+  function current(): 'terminal' | 'cyber' {
+    return root.dataset.skin === 'cyber' ? 'cyber' : 'terminal';
+  }
+
+  function apply(skin: 'terminal' | 'cyber') {
+    root.dataset.skin = skin;
+    try {
+      localStorage.setItem(KEY, skin);
+    } catch {
+      /* modo privado: se ignora */
+    }
+  }
+
+  document.getElementById('skin-toggle')?.addEventListener('click', () => {
+    apply(current() === 'cyber' ? 'terminal' : 'cyber');
+  });
+</script>

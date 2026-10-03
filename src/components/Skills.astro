@@ -1,0 +1,164 @@
+---
+import { skills } from '../data/skills';
+import { getLangFromUrl, useTranslations, pick } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<div class="tree">
+  <p class="root" aria-hidden="true">~/stack</p>
+
+  <ol class="rows">
+    {
+      skills.map((group, i) => (
+        <li class:list={['row', { 'row--last': i === skills.length - 1 }]}>
+          <h3 class="row__name">
+            {pick(group.title, lang).toLowerCase()}
+            <span class="slash">/</span>
+          </h3>
+          <ul class="row__items">
+            {group.items.map((item) => (
+              <li class="item">{item}</li>
+            ))}
+          </ul>
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<p class="note">
+  <span class="sigil">#</span>{' '}
+  {t('stack.note')}
+</p>
+
+<style>
+  .tree {
+    font-size: 0.85rem;
+  }
+
+  .root {
+    margin: 0 0 0.2rem;
+    color: var(--text-dim);
+  }
+
+  .row {
+    position: relative;
+    display: grid;
+    gap: 0.1rem 1.2rem;
+    padding: 0.6rem 0 0.6rem 1.9rem;
+    border-bottom: 1px dashed var(--border);
+  }
+  .row--last {
+    border-bottom: 0;
+  }
+
+  /* Ramas dibujadas con líneas, no con glifos: así siempre caen
+     sobre la primera línea del nombre, mida lo que mida la fila.
+     --tick es el centro vertical de esa línea. */
+  .row {
+    --tick: calc(0.6rem + 8px);
+  }
+
+  /* Tramo vertical del árbol. */
+  .row::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border-strong);
+  }
+  .row:first-child::before {
+    top: var(--tick);
+  }
+  .row--last::before {
+    top: 0;
+    bottom: auto;
+    height: var(--tick);
+  }
+
+  /* Tramo horizontal hacia el nombre. */
+  .row::after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: var(--tick);
+    width: 13px;
+    height: 1px;
+    background: var(--border-strong);
+  }
+
+  @media (min-width: 720px) {
+    .row {
+      grid-template-columns: 10rem 1fr;
+      align-items: baseline;
+    }
+  }
+
+  .row__name {
+    font-size: 0.85rem;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .slash {
+    color: var(--text-dim);
+    font-weight: 400;
+  }
+
+  .row__items {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0.5rem;
+    row-gap: 0.1rem;
+  }
+
+  .item {
+    color: var(--text-dim);
+    transition: color 0.15s ease;
+  }
+  .item:hover {
+    color: var(--accent);
+  }
+
+  .item:not(:last-child)::after {
+    content: '·';
+    margin-left: 0.5rem;
+    color: var(--border-strong);
+  }
+
+  .note {
+    margin: 1.5rem 0 0;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+  .sigil {
+    color: var(--accent);
+  }
+
+  /* ---------- Estética cyber ---------- */
+  :global(:root[data-skin='cyber']) .root {
+    color: var(--accent);
+  }
+  :global(:root[data-skin='cyber']) .row::before,
+  :global(:root[data-skin='cyber']) .row::after {
+    background: var(--accent);
+  }
+  :global(:root[data-skin='cyber']) .row__name {
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  :global(:root[data-skin='cyber']) .slash {
+    color: var(--accent-2);
+  }
+  :global(:root[data-skin='cyber']) .item:hover {
+    color: var(--accent-2);
+    text-shadow: 0 0 12px var(--accent-glow);
+  }
+  :global(:root[data-skin='cyber']) .item:not(:last-child)::after {
+    color: var(--info);
+    opacity: 0.5;
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+import Hero from './Hero.astro';
+import Section from './Section.astro';
+import About from './About.astro';
+import Skills from './Skills.astro';
+import Projects from './Projects.astro';
+import Contact from './Contact.astro';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Hero />
+
+<Section id="about" index="01" title={t('about.title')} cmd={t('about.cmd')}>
+  <About />
+</Section>
+
+<Section id="stack" index="02" title={t('stack.title')} cmd={t('stack.cmd')}>
+  <Skills />
+</Section>
+
+<Section
+  id="projects"
+  index="03"
+  title={t('projects.title')}
+  cmd={t('projects.cmd')}
+>
+  <Projects />
+</Section>
+
+<Section
+  id="contact"
+  index="04"
+  title={t('contact.title')}
+  cmd={t('contact.cmd')}
+>
+  <Contact />
+</Section>

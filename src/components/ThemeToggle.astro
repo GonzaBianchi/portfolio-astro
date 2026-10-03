@@ -1,0 +1,88 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+---
+
+<button id="theme-toggle" class="toggle" type="button" aria-label={label} title={label}>
+  <span class="icon icon--sun"><Icon name="sun" size={15} /></span>
+  <span class="icon icon--moon"><Icon name="moon" size={15} /></span>
+</button>
+
+<style>
+  .toggle {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: color 0.18s ease, border-color 0.18s ease;
+  }
+
+  .toggle:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .icon {
+    grid-area: 1 / 1;
+    display: grid;
+    place-items: center;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  /* Oscuro: se ve el sol (acción = pasar a claro). Claro: se ve la luna. */
+  :global(:root[data-theme='light']) .icon--sun,
+  :global(:root:not([data-theme='light'])) .icon--moon {
+    opacity: 0;
+    transform: scale(0.6) rotate(-45deg);
+  }
+</style>
+
+<script>
+  const KEY = 'theme';
+  const root = document.documentElement;
+
+  function current(): 'light' | 'dark' {
+    return root.dataset.theme === 'light' ? 'light' : 'dark';
+  }
+
+  function apply(theme: 'light' | 'dark') {
+    root.dataset.theme = theme;
+    root.style.colorScheme = theme;
+    try {
+      localStorage.setItem(KEY, theme);
+    } catch {
+      /* modo privado: se ignora */
+    }
+  }
+
+  document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    apply(current() === 'light' ? 'dark' : 'light');
+  });
+
+  // Sigue al sistema mientras el usuario no haya elegido manualmente.
+  window
+    .matchMedia('(prefers-color-scheme: light)')
+    .addEventListener('change', (e) => {
+      let stored: string | null = null;
+      try {
+        stored = localStorage.getItem(KEY);
+      } catch {
+        /* noop */
+      }
+      if (!stored) {
+        root.dataset.theme = e.matches ? 'light' : 'dark';
+        root.style.colorScheme = e.matches ? 'light' : 'dark';
+      }
+    });
+</script>

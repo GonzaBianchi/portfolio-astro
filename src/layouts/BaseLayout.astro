@@ -1,0 +1,182 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getLangFromUrl, useTranslations, alternatePath } from '../i18n/utils';
+import { profile } from '../data/profile';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const { title = t('meta.title'), description = t('meta.description') } =
+  Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const esHref = new URL(alternatePath(Astro.url, 'es'), canonical);
+const enHref = new URL(alternatePath(Astro.url, 'en'), canonical);
+---
+
+<!doctype html>
+<html lang={lang} data-theme="dark" data-skin="terminal">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* Declara soporte para ambos esquemas: evita el force-dark de Chrome. */}
+    <meta name="color-scheme" content="dark light" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={profile.name} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="es" href={esHref} />
+    <link rel="alternate" hreflang="en" href={enHref} />
+    <link rel="alternate" hreflang="x-default" href={esHref} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={lang === 'es' ? 'es_AR' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="theme-color" content="#0a0e0a" />
+
+    {/* Aplica tema y estética antes del primer paint: evita el flash. */}
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        /* Debe coincidir con --bg de cada combinación en global.css. */
+        const BG = {
+          'terminal:dark': '#0a0e0a',
+          'terminal:light': '#f4f6f2',
+          'cyber:dark': '#08040f',
+          'cyber:light': '#f7f1fb',
+        };
+
+        let theme = null;
+        let skin = null;
+        try {
+          theme = localStorage.getItem('theme');
+          skin = localStorage.getItem('skin');
+        } catch (e) {}
+
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = window.matchMedia('(prefers-color-scheme: light)').matches
+            ? 'light'
+            : 'dark';
+        }
+        if (skin !== 'cyber' && skin !== 'terminal') skin = 'terminal';
+
+        root.dataset.theme = theme;
+        root.dataset.skin = skin;
+        root.style.colorScheme = theme;
+
+        /* Barra del navegador y favicon en sintonía con la estética. */
+        const meta = document.querySelector('meta[name="theme-color"]');
+        const icon = document.querySelector('link[rel="icon"]');
+        const sync = () => {
+          const skin = root.dataset.skin;
+          meta?.setAttribute(
+            'content',
+            BG[`${skin}:${root.dataset.theme}`] ?? BG['terminal:dark']
+          );
+          icon?.setAttribute(
+            'href',
+            skin === 'cyber' ? '/favicon-cyber.svg' : '/favicon.svg'
+          );
+        };
+        sync();
+        new MutationObserver(sync).observe(root, {
+          attributes: true,
+          attributeFilter: ['data-theme', 'data-skin'],
+        });
+      })();
+    </script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">
+      {lang === 'es' ? 'Saltar al contenido' : 'Skip to content'}
+    </a>
+
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  /* Scanlines CRT sutiles, solo en modo oscuro. */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.5;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 0, 0, 0.16) 3px,
+      rgba(0, 0, 0, 0) 4px
+    );
+  }
+
+  :global(:root[data-theme='light']) .scanlines {
+    display: none;
+  }
+
+  /* Cyber: CRT más marcado, viñeta y barrido de neón. */
+  :global(:root[data-skin='cyber']) .scanlines {
+    opacity: 0.55;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(70, 0, 50, 0.3) 3px,
+      rgba(0, 0, 0, 0) 4px
+    );
+    box-shadow: inset 0 0 200px 60px rgba(8, 4, 15, 0.75);
+  }
+
+  :global(:root[data-skin='cyber']) .scanlines::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(255, 47, 185, 0.08) 46%,
+      rgba(0, 229, 255, 0.07) 54%,
+      transparent 100%
+    );
+    background-size: 100% 240%;
+    background-repeat: no-repeat;
+    animation: sweep 9s linear infinite;
+  }
+
+  @keyframes sweep {
+    from {
+      background-position: 0 -140%;
+    }
+    to {
+      background-position: 0 240%;
+    }
+  }
+
+  main {
+    position: relative;
+    z-index: 2;
+  }
+</style>

@@ -1,0 +1,74 @@
+---
+import Icon from './Icon.astro';
+import { profile } from '../data/profile';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<div class="box">
+  <p class="lead">{t('contact.lead')}</p>
+
+  <p class="mail">
+    <span class="sigil">$</span> mail -s "hola" {profile.email}
+  </p>
+
+  <div class="ctas">
+    <a class="btn btn--primary" href={`mailto:${profile.email}`}>
+      <Icon name="mail" size={15} />
+      {t('contact.email')}
+    </a>
+
+    {
+      profile.socials
+        .filter((s) => !s.url.startsWith('mailto:'))
+        .map((s) => (
+          <a class="btn" href={s.url} target="_blank" rel="noopener noreferrer me">
+            <Icon name={s.icon as 'github' | 'linkedin'} size={15} />
+            {s.label}
+          </a>
+        ))
+    }
+  </div>
+</div>
+
+<style>
+  .box {
+    max-width: 60ch;
+  }
+
+  .lead {
+    color: var(--text-dim);
+  }
+
+  .mail {
+    padding: 0.7rem 0.9rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--accent);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .sigil {
+    color: var(--accent);
+  }
+
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  /* ---------- Estética cyber ---------- */
+  :global(:root[data-skin='cyber']) .mail {
+    border-color: var(--border-strong);
+    border-left: 2px solid var(--accent-2);
+    box-shadow: var(--neon);
+  }
+</style>

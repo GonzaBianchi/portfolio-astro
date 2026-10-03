@@ -1,0 +1,592 @@
+---
+import Icon from './Icon.astro';
+import { profile } from '../data/profile';
+import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const home = localizePath('/', lang);
+
+/* Pares comando/salida: los índices pares son comandos. */
+const lines = profile.terminal[lang];
+---
+
+<section class="hero">
+  <div class="container grid">
+    <div class="intro">
+      <p class="greeting">
+        <span class="sigil">$</span>{' '}
+        {t('hero.greeting')}
+      </p>
+
+      <h1 class="name" data-text={profile.name}>{profile.name}</h1>
+
+      <p class="role">
+        <span class="bracket">&lt;</span>{t('hero.role')}<span class="bracket"
+          >/&gt;</span
+        >
+      </p>
+
+      <p class="tagline">{t('hero.tagline')}</p>
+
+      {
+        profile.available && (
+          <p class="status">
+            <span class="dot" aria-hidden="true" />
+            {t('hero.status')}
+          </p>
+        )
+      }
+
+      <div class="ctas">
+        <a class="btn btn--primary" href={`${home}#projects`}>
+          <Icon name="code" size={15} />
+          {t('hero.cta.projects')}
+        </a>
+        <a class="btn" href={`mailto:${profile.email}`}>
+          <Icon name="mail" size={15} />
+          {t('hero.cta.contact')}
+        </a>
+      </div>
+    </div>
+
+    <div class="term" id="hero-term">
+      <div class="term__bar">
+        <span class="term__dots" aria-hidden="true">
+          <i class="d d--r"></i><i class="d d--y"></i><i class="d d--g"></i>
+        </span>
+        <span class="term__title"
+          >{profile.handle}@{profile.host}: ~/bin/bash</span
+        >
+      </div>
+
+      <div class="term__body">
+        <ol class="term__lines" data-lines={JSON.stringify(lines)}>
+          {
+            lines.map((line, i) => (
+              <li class={i % 2 === 0 ? 'l l--cmd' : 'l l--out'}>
+                {i % 2 === 0 && <span class="sigil">$</span>}
+                <span class="l__text">{line}</span>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="term__cursor">
+          <span class="sigil">$</span><span class="blink">▌</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(3rem, 9vw, 6rem) clamp(2rem, 6vw, 4rem);
+  }
+
+  .grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .grid {
+      grid-template-columns: 1.05fr 1fr;
+    }
+  }
+
+  .greeting {
+    margin: 0 0 0.4rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+  .sigil {
+    color: var(--accent);
+  }
+
+  .name {
+    position: relative;
+    margin: 0 0 0.5rem;
+    color: var(--text);
+  }
+
+  /* Glitch RGB al pasar el mouse. */
+  .name::before,
+  .name::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .name:hover::before {
+    opacity: 0.9;
+    color: var(--accent);
+    animation: glitch-a 0.5s steps(2, end) infinite;
+  }
+  .name:hover::after {
+    opacity: 0.75;
+    color: var(--info);
+    animation: glitch-b 0.4s steps(2, end) infinite;
+  }
+
+  @keyframes glitch-a {
+    0%,
+    100% {
+      transform: translate(0);
+      clip-path: inset(0 0 62% 0);
+    }
+    50% {
+      transform: translate(-2px, -1px);
+      clip-path: inset(38% 0 20% 0);
+    }
+  }
+  @keyframes glitch-b {
+    0%,
+    100% {
+      transform: translate(0);
+      clip-path: inset(70% 0 0 0);
+    }
+    50% {
+      transform: translate(2px, 1px);
+      clip-path: inset(20% 0 55% 0);
+    }
+  }
+
+  .role {
+    margin: 0 0 1.1rem;
+    font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .bracket {
+    color: var(--accent);
+    opacity: 0.7;
+  }
+
+  .tagline {
+    max-width: 46ch;
+    color: var(--text-dim);
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 1.5rem;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.74rem;
+    color: var(--accent);
+    border: 1px solid var(--border-strong);
+    border-radius: 99px;
+    background: var(--accent-glow);
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    70% {
+      box-shadow: 0 0 0 7px transparent;
+    }
+    100% {
+      box-shadow: 0 0 0 0 transparent;
+    }
+  }
+
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  /* --- Ventana de terminal --- */
+  .term {
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .term__bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+
+  .term__dots {
+    display: inline-flex;
+    gap: 0.35rem;
+  }
+  .d {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: block;
+  }
+  .d--r {
+    background: var(--danger);
+  }
+  .d--y {
+    background: var(--warn);
+  }
+  .d--g {
+    background: var(--accent);
+  }
+
+  .term__title {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .term__body {
+    padding: 1rem 1rem 1.1rem;
+    font-size: 0.82rem;
+    line-height: 1.85;
+    min-height: 15rem;
+  }
+
+  .l {
+    display: flex;
+    gap: 0.45rem;
+    word-break: break-word;
+  }
+  .l--cmd {
+    color: var(--text);
+  }
+  .l--out {
+    color: var(--muted);
+    padding-left: 0.9rem;
+    padding-bottom: 0.4rem;
+  }
+
+  .term__cursor {
+    display: flex;
+    gap: 0.45rem;
+    margin: 0;
+    color: var(--accent);
+  }
+
+  /* ---------- Estética cyber ---------- */
+
+  /* Aberración cromática permanente sobre el nombre. */
+  :global(:root[data-skin='cyber']) .name {
+    text-shadow: -2px 0 0 rgba(255, 47, 185, 0.55),
+      2px 0 0 rgba(0, 229, 255, 0.45), 0 0 30px rgba(255, 47, 185, 0.35);
+  }
+  :global(:root[data-skin='cyber'][data-theme='light']) .name {
+    text-shadow: -1.5px 0 0 rgba(184, 0, 110, 0.35),
+      1.5px 0 0 rgba(0, 130, 190, 0.3);
+  }
+
+  /* Las capas RGB dejan de esperar el hover: viven en ráfagas.
+     steps(1, end) = sin interpolación, los saltos son duros.
+     Los períodos son primos entre sí para que nunca se sincronicen. */
+  :global(:root[data-skin='cyber']) .name {
+    animation: glitch-skew 6.7s steps(1, end) infinite;
+  }
+
+  :global(:root[data-skin='cyber']) .name::before {
+    opacity: 1;
+    color: var(--accent);
+    animation: burst-a 5.2s steps(1, end) infinite;
+  }
+  :global(:root[data-skin='cyber']) .name::after {
+    opacity: 1;
+    color: var(--info);
+    animation: burst-b 4.3s steps(1, end) infinite;
+  }
+
+  /* Al pasar el mouse la falla se vuelve constante. */
+  :global(:root[data-skin='cyber']) .name:hover {
+    animation-duration: 1.3s;
+  }
+  :global(:root[data-skin='cyber']) .name:hover::before {
+    animation-duration: 1.1s;
+  }
+  :global(:root[data-skin='cyber']) .name:hover::after {
+    color: var(--accent-2);
+    animation-duration: 0.9s;
+  }
+
+  /* Las franjas son gruesas a propósito: con el título en dos líneas,
+     una banda fina cae en el interlineado y no se ve nada. */
+  @keyframes burst-a {
+    0%,
+    38% {
+      clip-path: inset(0 0 100% 0);
+      transform: translate(0);
+    }
+    39% {
+      clip-path: inset(30% 0 40% 0);
+      transform: translate(11px, -2px);
+    }
+    41% {
+      clip-path: inset(58% 0 8% 0);
+      transform: translate(-9px, 1px);
+    }
+    43%,
+    84% {
+      clip-path: inset(0 0 100% 0);
+      transform: translate(0);
+    }
+    85% {
+      clip-path: inset(4% 0 62% 0);
+      transform: translate(-12px, -3px);
+    }
+    87% {
+      clip-path: inset(38% 0 34% 0);
+      transform: translate(10px, 2px);
+    }
+    89% {
+      clip-path: inset(64% 0 6% 0);
+      transform: translate(-14px, 2px);
+    }
+    91% {
+      clip-path: inset(0 0 100% 0);
+      transform: translate(0);
+    }
+    94% {
+      clip-path: inset(20% 0 48% 0);
+      transform: translate(13px, -2px);
+    }
+    96% {
+      clip-path: inset(52% 0 20% 0);
+      transform: translate(-8px, 1px);
+    }
+    97%,
+    100% {
+      clip-path: inset(0 0 100% 0);
+      transform: translate(0);
+    }
+  }
+
+  @keyframes burst-b {
+    0%,
+    30% {
+      clip-path: inset(0 0 100% 0);
+      transform: translate(0);
+    }
+    31% {
+      clip-path: inset(12% 0 54% 0);
+      transform: translate(-10px, 2px);
+    }
+    33%,
+    78% {
+      clip-path: inset(0 0 100% 0);
+      transform: translate(0);
+    }
+    79% {
+      clip-path: inset(56% 0 12% 0);
+      transform: translate(12px, 3px);
+    }
+    81% {
+      clip-path: inset(10% 0 56% 0);
+      transform: translate(-13px, -2px);
+    }
+    83% {
+      clip-path: inset(0 0 100% 0);
+      transform: translate(0);
+    }
+    92% {
+      clip-path: inset(32% 0 38% 0);
+      transform: translate(14px, 1px);
+    }
+    93.5% {
+      clip-path: inset(66% 0 4% 0);
+      transform: translate(-11px, -3px);
+    }
+    95%,
+    100% {
+      clip-path: inset(0 0 100% 0);
+      transform: translate(0);
+    }
+  }
+
+  @keyframes glitch-skew {
+    0%,
+    90% {
+      transform: none;
+    }
+    91% {
+      transform: skewX(-8deg) translateX(3px);
+    }
+    92% {
+      transform: skewX(5deg) translateX(-2px);
+    }
+    93% {
+      transform: none;
+    }
+    97% {
+      transform: skewX(3deg);
+    }
+    97.6%,
+    100% {
+      transform: none;
+    }
+  }
+
+  /* El rol pierde señal un instante. */
+  :global(:root[data-skin='cyber']) .role {
+    animation: signal-drop 7.1s steps(1, end) infinite;
+  }
+
+  @keyframes signal-drop {
+    0%,
+    88% {
+      opacity: 1;
+      text-shadow: none;
+    }
+    88.5% {
+      opacity: 0.3;
+      text-shadow: none;
+    }
+    89.2% {
+      opacity: 1;
+      text-shadow: -2px 0 var(--accent), 2px 0 var(--info);
+    }
+    90% {
+      opacity: 0.55;
+      text-shadow: none;
+    }
+    90.6%,
+    100% {
+      opacity: 1;
+      text-shadow: none;
+    }
+  }
+
+  :global(:root[data-skin='cyber']) .role {
+    letter-spacing: 0.04em;
+  }
+  :global(:root[data-skin='cyber']) .bracket {
+    color: var(--info);
+    opacity: 1;
+  }
+
+  :global(:root[data-skin='cyber']) .status {
+    border-radius: 0;
+    border-color: var(--accent);
+    color: var(--accent-2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    box-shadow: var(--neon);
+  }
+  :global(:root[data-skin='cyber']) .dot {
+    background: var(--accent-2);
+  }
+
+  /* La ventana de terminal pasa a ser una pantalla de neón. */
+  :global(:root[data-skin='cyber']) .term {
+    border-radius: 0;
+    border-color: var(--accent);
+    box-shadow: var(--shadow), var(--neon-strong);
+    animation: term-flicker 8.3s steps(1, end) infinite;
+  }
+
+  /* El 100% repite el estado estático: bajo reduced-motion no queda residuo. */
+  @keyframes term-flicker {
+    0%,
+    93% {
+      border-color: var(--accent);
+      box-shadow: var(--shadow), var(--neon-strong);
+    }
+    93.6% {
+      border-color: var(--info);
+      box-shadow: var(--shadow), 0 0 46px -6px var(--info);
+    }
+    94.2% {
+      border-color: var(--border-strong);
+      box-shadow: none;
+    }
+    94.8% {
+      border-color: var(--accent-2);
+      box-shadow: var(--shadow), 0 0 46px -6px var(--accent-2);
+    }
+    95.4%,
+    100% {
+      border-color: var(--accent);
+      box-shadow: var(--shadow), var(--neon-strong);
+    }
+  }
+  :global(:root[data-skin='cyber']) .term__bar {
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 22%, var(--surface-2)),
+      var(--surface-2) 55%,
+      color-mix(in srgb, var(--info) 16%, var(--surface-2))
+    );
+  }
+  :global(:root[data-skin='cyber']) .d--g {
+    background: var(--info);
+  }
+  :global(:root[data-skin='cyber']) .l--cmd {
+    text-shadow: 0 0 14px rgba(255, 47, 185, 0.25);
+  }
+</style>
+
+<script>
+  const list = document.querySelector<HTMLElement>('.term__lines');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (list && !reduce) {
+    const items = Array.from(list.querySelectorAll<HTMLElement>('.l'));
+    const texts = items.map(
+      (el) => el.querySelector<HTMLElement>('.l__text')?.textContent ?? ''
+    );
+
+    // Estado inicial: todo vacío y oculto.
+    items.forEach((el, i) => {
+      el.style.visibility = 'hidden';
+      const span = el.querySelector<HTMLElement>('.l__text');
+      if (span) span.textContent = '';
+      void i;
+    });
+
+    const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+    async function typeLine(el: HTMLElement, text: string, speed: number) {
+      el.style.visibility = 'visible';
+      const span = el.querySelector<HTMLElement>('.l__text');
+      if (!span) return;
+      for (const char of text) {
+        span.textContent += char;
+        await wait(speed);
+      }
+    }
+
+    async function run() {
+      for (let i = 0; i < items.length; i++) {
+        const isCmd = i % 2 === 0;
+        await typeLine(items[i], texts[i], isCmd ? 42 : 9);
+        await wait(isCmd ? 260 : 620);
+      }
+    }
+
+    // Arranca cuando la terminal entra en pantalla.
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          io.disconnect();
+          run();
+        }
+      },
+      { threshold: 0.25 }
+    );
+    io.observe(list);
+  }
+</script>

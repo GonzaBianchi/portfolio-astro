@@ -1,0 +1,294 @@
+---
+import Icon from './Icon.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import SkinToggle from './SkinToggle.astro';
+import { profile } from '../data/profile';
+import {
+  getLangFromUrl,
+  useTranslations,
+  localizePath,
+  alternatePath,
+} from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const home = localizePath('/', lang);
+const other = lang === 'es' ? 'en' : 'es';
+
+const links = [
+  { id: 'about', label: t('nav.about') },
+  { id: 'stack', label: t('nav.stack') },
+  { id: 'projects', label: t('nav.projects') },
+  { id: 'contact', label: t('nav.contact') },
+];
+---
+
+<header class="header">
+  <div class="container bar">
+    <a class="brand" href={home}>
+      <span class="brand__user">{profile.handle}@{profile.host}</span><span
+        class="brand__path">:~$</span
+      >
+      <span class="brand__cursor blink" aria-hidden="true">_</span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label={lang === 'es' ? 'Principal' : 'Main'}>
+      <ul class="nav__list">
+        {
+          links.map((link, i) => (
+            <li>
+              <a class="nav__link" href={`${home}#${link.id}`}>
+                <span class="nav__index">0{i + 1}.</span>
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <a
+        class="lang"
+        href={alternatePath(Astro.url, other)}
+        hreflang={other}
+        aria-label={t('nav.lang')}
+        title={t('nav.lang')}
+      >
+        <Icon name="globe" size={14} />
+        <span>{other.toUpperCase()}</span>
+      </a>
+
+      <SkinToggle label={t('nav.skin')} />
+
+      <ThemeToggle label={t('nav.theme')} />
+
+      <button
+        id="nav-toggle"
+        class="burger"
+        type="button"
+        aria-label={t('nav.menu')}
+        aria-expanded="false"
+        aria-controls="nav"
+      >
+        <span class="burger__open"><Icon name="menu" size={17} /></span>
+        <span class="burger__close"><Icon name="close" size={17} /></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(10px);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 60px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-right: auto;
+    white-space: nowrap;
+  }
+  .brand:hover {
+    text-decoration: none;
+  }
+  .brand__user {
+    color: var(--accent);
+  }
+  .brand__path {
+    color: var(--text-dim);
+  }
+  .brand__cursor {
+    color: var(--accent);
+  }
+
+  .nav__list {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+  }
+
+  .nav__link {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    transition: color 0.18s ease;
+  }
+  .nav__link:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .nav__index {
+    color: var(--accent);
+    font-size: 0.72rem;
+    margin-right: 0.3rem;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    height: 34px;
+    padding-inline: 0.55rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    transition: color 0.18s ease, border-color 0.18s ease;
+  }
+  .lang:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    text-decoration: none;
+  }
+
+  .burger {
+    display: none;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: pointer;
+  }
+  .burger__close {
+    display: none;
+  }
+  .burger[aria-expanded='true'] .burger__open {
+    display: none;
+  }
+  .burger[aria-expanded='true'] .burger__close {
+    display: block;
+  }
+
+  /* ---------- Estética cyber ---------- */
+  :global(:root[data-skin='cyber']) .header {
+    border-bottom-color: transparent;
+    background: color-mix(in srgb, var(--bg) 76%, transparent);
+  }
+
+  /* Filo de neón bajo la barra. */
+  :global(:root[data-skin='cyber']) .header::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--accent) 18%,
+      var(--accent-2) 52%,
+      var(--info) 82%,
+      transparent
+    );
+  }
+
+  :global(:root[data-skin='cyber']) .brand__user {
+    text-shadow: 0 0 12px var(--accent-glow);
+  }
+  :global(:root[data-skin='cyber']) .nav__index {
+    color: var(--info);
+  }
+  :global(:root[data-skin='cyber']) .nav__link:hover {
+    color: var(--accent-2);
+  }
+  :global(:root[data-skin='cyber']) .lang:hover {
+    color: var(--accent-2);
+    border-color: var(--accent-2);
+  }
+
+  @media (max-width: 760px) {
+    .burger {
+      display: grid;
+    }
+
+    .nav {
+      position: absolute;
+      inset: 60px 0 auto;
+      display: none;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-soft);
+    }
+    .nav[data-open='true'] {
+      display: block;
+    }
+    .nav__list {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      padding: 0.5rem clamp(1rem, 4vw, 2rem) 1rem;
+    }
+    .nav__list li {
+      width: 100%;
+    }
+    .nav__link {
+      display: block;
+      padding: 0.7rem 0;
+      font-size: 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+  }
+
+  /* Con cuatro controles, el prompt de la marca cede espacio primero. */
+  @media (max-width: 420px) {
+    .bar {
+      gap: 0.5rem;
+    }
+    .actions {
+      gap: 0.35rem;
+    }
+    .brand__path,
+    .brand__cursor {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const nav = document.getElementById('nav');
+
+  function setOpen(open: boolean) {
+    nav?.setAttribute('data-open', String(open));
+    toggle?.setAttribute('aria-expanded', String(open));
+  }
+
+  toggle?.addEventListener('click', () => {
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+
+  nav?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setOpen(false);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setOpen(false);
+  });
+</script>

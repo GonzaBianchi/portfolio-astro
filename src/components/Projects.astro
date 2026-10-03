@@ -1,0 +1,399 @@
+---
+import Icon from './Icon.astro';
+import { projects } from '../data/projects';
+import { getLangFromUrl, useTranslations, pick } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+/** Hash estable (FNV-1a) para el "commit" de cada proyecto. */
+function commitHash(name: string): string {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < name.length; i++) {
+    h ^= name.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return (h >>> 0).toString(16).padStart(8, '0').slice(0, 7);
+}
+
+/* El primer destacado arranca abierto: deja contenido a la vista y
+   muestra que las filas se despliegan. */
+const openIndex = Math.max(
+  0,
+  projects.findIndex((p) => p.featured)
+);
+---
+
+{
+  projects.length === 0 ? (
+    <p class="empty">{t('projects.empty')}</p>
+  ) : (
+    <ol class="log">
+      {projects.map((project, i) => (
+        <li class:list={['entry', { 'entry--featured': project.featured }]}>
+          <span class="node" aria-hidden="true" />
+
+          <details class="detail" name="project" open={i === openIndex}>
+            <summary class="line">
+              <span class="hash" aria-hidden="true">
+                {commitHash(project.name)}
+              </span>
+              <h3 class="name">{project.name}</h3>
+              {project.featured && (
+                <span class="ref">({t('projects.featured')})</span>
+              )}
+              <span class="year">{project.year}</span>
+              <span class="chevron" aria-hidden="true">
+                <Icon name="chevron" size={14} />
+              </span>
+            </summary>
+
+            <div class="panel">
+              {project.image && (
+                <div class="frame">
+                  <img
+                    class="shot"
+                    src={project.image.src}
+                    alt={pick(project.image.alt, lang)}
+                    width="800"
+                    height="500"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              )}
+
+              <p class="desc">{pick(project.description, lang)}</p>
+
+              {project.features && project.features.length > 0 && (
+                <ul class="features">
+                  {project.features.map((feature) => (
+                    <li>{pick(feature, lang)}</li>
+                  ))}
+                </ul>
+              )}
+
+              <ul class="tags">
+                {project.tags.map((tag) => (
+                  <li class="tag">{tag}</li>
+                ))}
+              </ul>
+
+              {/* Sin repo ni demo (proyectos cerrados) no va el contenedor:
+                  si no, deja un hueco al final del panel. */}
+              {(project.repo || project.demo) && (
+                <div class="links">
+                  {project.repo && (
+                    <a
+                      href={project.repo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Icon name="github" size={14} />
+                      {t('projects.code')}
+                    </a>
+                  )}
+                  {project.demo && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Icon name="external" size={14} />
+                      {t('projects.demo')}
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          </details>
+        </li>
+      ))}
+    </ol>
+  )
+}
+
+<style>
+  .log {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: 11px 1fr;
+    gap: 0 1.1rem;
+    padding-bottom: 0.9rem;
+  }
+  .entry:last-child {
+    padding-bottom: 0;
+  }
+
+  /* Rama vertical que une los commits. */
+  .entry:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1.2rem;
+    bottom: 0;
+    width: 1px;
+    background: var(--border-strong);
+  }
+
+  .node {
+    width: 11px;
+    height: 11px;
+    margin-top: 0.42rem;
+    border: 2px solid var(--border-strong);
+    border-radius: 50%;
+    background: var(--bg);
+    transition: border-color 0.2s ease, background-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .entry--featured .node {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+  .entry:hover .node,
+  .entry:has(.detail[open]) .node {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-glow);
+  }
+
+  .detail {
+    min-width: 0;
+  }
+
+  /* --- Fila plegada --- */
+  .line {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0 0.6rem;
+    padding: 0.1rem 0;
+    cursor: pointer;
+    list-style: none;
+  }
+  .line::-webkit-details-marker {
+    display: none;
+  }
+  .line:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .hash {
+    font-size: 0.78rem;
+    color: var(--accent-dim);
+  }
+
+  .name {
+    font-size: 0.98rem;
+    color: var(--text);
+    word-break: break-word;
+    transition: color 0.18s ease;
+  }
+  .line:hover .name,
+  .detail[open] .name {
+    color: var(--accent);
+  }
+
+  .ref {
+    font-size: 0.72rem;
+    color: var(--warn);
+  }
+
+  .year {
+    margin-left: auto;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+  }
+
+  .chevron {
+    display: grid;
+    place-items: center;
+    color: var(--text-dim);
+    transition: transform 0.25s ease, color 0.18s ease;
+  }
+  .detail[open] .chevron {
+    transform: rotate(180deg);
+    color: var(--accent);
+  }
+  .line:hover .chevron {
+    color: var(--accent);
+  }
+
+  /* --- Panel desplegado ---
+     `::details-content` + interpolate-size animan la apertura sin JS.
+     Donde no está soportado el panel simplemente aparece de golpe. */
+  .detail::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition-property: block-size, content-visibility;
+    transition-duration: 0.32s;
+    transition-timing-function: ease;
+    transition-behavior: allow-discrete;
+  }
+  .detail[open]::details-content {
+    block-size: auto;
+  }
+
+  .panel {
+    padding: 0.7rem 0 0.9rem;
+  }
+
+  /* Passe-partout: el fondo neutro amortigua el salto entre la página y
+     una captura de tema oscuro. */
+  .frame {
+    max-width: 34rem;
+    margin-bottom: 0.9rem;
+    padding: 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--mat);
+  }
+
+  .shot {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 8 / 5;
+    /* La caja es siempre 16:10 para que todas midan igual. `contain` evita
+       que una captura de otro ratio salga estirada: sobra passe-partout. */
+    object-fit: contain;
+    border-radius: calc(var(--radius) - 1px);
+    background: var(--mat);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.22),
+      0 10px 24px -14px rgba(0, 0, 0, 0.65);
+  }
+
+  .desc {
+    max-width: 68ch;
+    margin: 0 0 0.7rem;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+  }
+
+  .features {
+    max-width: 68ch;
+    margin: 0 0 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+  .features li {
+    padding-left: 1.1rem;
+    position: relative;
+  }
+  .features li::before {
+    content: '+';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.8rem;
+  }
+
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.76rem;
+    color: var(--text-dim);
+    transition: color 0.18s ease;
+  }
+  .links a:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .empty {
+    color: var(--text-dim);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .detail::details-content {
+      transition: none;
+    }
+  }
+
+  /* ---------- Estética cyber ---------- */
+  :global(:root[data-skin='cyber']) .entry:not(:last-child)::before {
+    background: linear-gradient(
+      180deg,
+      var(--accent),
+      color-mix(in srgb, var(--info) 60%, transparent)
+    );
+  }
+  :global(:root[data-skin='cyber']) .node {
+    border-radius: 0;
+    transform: rotate(45deg);
+    border-color: var(--info);
+  }
+  :global(:root[data-skin='cyber']) .entry--featured .node {
+    border-color: var(--accent-2);
+    background: var(--accent-2);
+    box-shadow: var(--neon-strong);
+  }
+  :global(:root[data-skin='cyber']) .entry:hover .node,
+  :global(:root[data-skin='cyber']) .entry:has(.detail[open]) .node {
+    border-color: var(--accent-2);
+    box-shadow: 0 0 0 4px var(--accent-glow);
+  }
+  :global(:root[data-skin='cyber']) .hash {
+    color: var(--info);
+  }
+  :global(:root[data-skin='cyber']) .ref {
+    color: var(--accent-2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  :global(:root[data-skin='cyber']) .line:hover .name,
+  :global(:root[data-skin='cyber']) .detail[open] .name {
+    color: var(--accent-2);
+    text-shadow: 0 0 16px var(--accent-glow);
+  }
+  :global(:root[data-skin='cyber']) .frame {
+    border-color: var(--border-strong);
+    box-shadow: var(--neon);
+  }
+  :global(:root[data-skin='cyber']) .features li::before {
+    color: var(--accent-2);
+  }
+  :global(:root[data-skin='cyber']) .links a:hover {
+    color: var(--accent-2);
+  }
+</style>
+
+<script>
+  /* Chrome/Safari/Firefox modernos cierran las otras filas solos gracias al
+     atributo `name`. Donde no está soportado, lo hacemos a mano. */
+  const supportsExclusive = 'name' in document.createElement('details');
+
+  if (!supportsExclusive) {
+    const items = Array.from(
+      document.querySelectorAll<HTMLDetailsElement>('details[name="project"]')
+    );
+
+    for (const item of items) {
+      item.addEventListener('toggle', () => {
+        if (!item.open) return;
+        for (const other of items) {
+          if (other !== item) other.open = false;
+        }
+      });
+    }
+  }
+</script>
