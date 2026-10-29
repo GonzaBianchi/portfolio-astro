@@ -25,7 +25,7 @@ export const ui = {
     'hero.role': 'Desarrollador Web / Full Stack',
     'hero.greeting': 'Hola, soy',
     'hero.tagline':
-      'Construyo interfaces rápidas, accesibles y con obsesión por el detalle. Me gusta el código simple, los sistemas que se entienden y las cosas que cargan en menos de un segundo.',
+      'Desarrollo aplicaciones full stack, del front-end al back-end. Diseño soluciones rápidas, eficientes y seguras, con sistemas interoperables, organizados y escalables.',
     'hero.cta.projects': 'Ver proyectos',
     'hero.cta.contact': 'Contactame',
     'hero.status': 'disponible para proyectos',
@@ -75,7 +75,7 @@ export const ui = {
     'hero.role': 'Web / Full Stack Developer',
     'hero.greeting': "Hi, I'm",
     'hero.tagline':
-      'I build fast, accessible interfaces with an obsession for detail. I like simple code, systems you can actually reason about, and pages that load in under a second.',
+      'I build full stack applications, from front-end to back-end. I design fast, efficient and secure solutions, with interoperable, well-organized and scalable systems.',
     'hero.cta.projects': 'View projects',
     'hero.cta.contact': 'Get in touch',
     'hero.status': 'available for work',
