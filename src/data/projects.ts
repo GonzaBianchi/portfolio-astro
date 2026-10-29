@@ -35,26 +35,12 @@ export const projects: Project[] = [
       en: 'A web system for the Santa Fe Public Works Ministry where subsidy recipients report back on what they spent the money on, with invoices checked against the tax authority and digital signatures.',
     },
     image: {
-      src: '/projects/mop-comprobantes.png',
+      src: '/projects/mop-comprobantes.svg',
       alt: {
-        es: 'Panel de revisión de una rendición: la lista de comprobantes con el monto de cada uno y los botones para aprobarlo, observarlo o rechazarlo.',
-        en: 'Review panel for an expense report: the list of receipts with each amount and the buttons to approve, flag or reject it.',
+        es: 'Ilustración de un documento con un sello de verificación.',
+        en: 'Illustration of a document with a verification stamp.',
       },
     },
-    features: [
-      {
-        es: 'Un auditor revisa la rendición gasto por gasto: aprueba, observa o rechaza cada comprobante, y puede devolverla al beneficiario para que corrija lo señalado antes de darla por aprobada.',
-        en: 'An auditor goes through the report expense by expense: approving, flagging or rejecting each receipt, and can send it back to the recipient to fix what was flagged before signing off.',
-      },
-      {
-        es: 'Además de rendir, el beneficiario puede pedir más plazo, ampliar el monto, cambiar el destino de los fondos o devolverlos, y cada pedido sigue su propio circuito de aprobación.',
-        en: 'Beyond reporting expenses, recipients can ask for more time, a larger amount, a change in what the funds are for, or to give them back, and each request follows its own approval path.',
-      },
-      {
-        es: 'Al cerrar cada etapa el sistema arma un paquete con todos los comprobantes, sus documentos de respaldo y la carátula de la rendición, listo para descargar y archivar.',
-        en: 'When a stage closes, the system builds a package with every receipt, its supporting documents and the report cover sheet, ready to download and file.',
-      },
-    ],
     tags: ['Symfony', 'PHP', 'PostgreSQL', 'Doctrine', 'Twig', 'Bootstrap'],
   },
   {
