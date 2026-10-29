@@ -27,7 +27,7 @@ export type Project = {
    capturas de verdad. */
 export const projects: Project[] = [
   {
-    name: 'mop-comprobantes',
+    name: 'comprobantes',
     year: '2025–2026',
     featured: true,
     description: {
@@ -35,7 +35,7 @@ export const projects: Project[] = [
       en: 'A web system for the Santa Fe Public Works Ministry where subsidy recipients report back on what they spent the money on, with invoices checked against the tax authority and digital signatures.',
     },
     image: {
-      src: '/projects/mop-comprobantes.svg',
+      src: '/projects/comprobantes.svg',
       alt: {
         es: 'Ilustración de un documento con un sello de verificación.',
         en: 'Illustration of a document with a verification stamp.',
