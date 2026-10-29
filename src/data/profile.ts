@@ -8,39 +8,39 @@ export const profile = {
   handle: 'gonzalo',
   host: 'portfolio',
   email: 'gonzalobianchini01@gmail.com',
-  location: { es: 'Argentina', en: 'Argentina' } satisfies Localized,
+  location: { es: 'Santa Fe, Argentina', en: 'Santa Fe, Argentina' } satisfies Localized,
   available: true,
 
   /** Líneas que se tipean en la terminal del hero. */
   terminal: {
     es: [
       'whoami',
-      'Desarrollador web. Front-end con foco en performance y accesibilidad.',
+      'Desarrollador web full stack. Front-end y back-end.',
       'cat intereses.txt',
-      'TypeScript · Astro · React · Node · Linux · automatización',
+      'TypeScript · Angular · Express · PHP/Symfony · Linux · automatización',
       'echo $OBJETIVO',
-      'Escribir código que se entienda dentro de seis meses.',
+      'Soluciones rápidas, eficientes y seguras para cada problema.',
     ],
     en: [
       'whoami',
-      'Web developer. Front-end focused on performance and accessibility.',
+      'Full stack web developer. Front-end and back-end.',
       'cat interests.txt',
-      'TypeScript · Astro · React · Node · Linux · automation',
+      'TypeScript · Angular · Express · PHP/Symfony · Linux · automation',
       'echo $GOAL',
-      'Write code that still makes sense six months later.',
+      'Fast, efficient and secure solutions to every problem.',
     ],
   } satisfies Record<'es' | 'en', string[]>,
 
   about: {
     es: [
-      'Soy desarrollador web y me dedico a construir productos donde el detalle importa: tiempos de carga, accesibilidad, y una base de código que no se vuelva un problema con el tiempo.',
-      'Trabajo sobre todo con TypeScript, Astro y React del lado del cliente, y Node del lado del servidor. Me siento cómodo en la terminal, automatizo lo que hago dos veces y prefiero resolver el problema antes que agregar una dependencia.',
-      'Cuando no estoy programando, ando leyendo sobre sistemas, jugando con Linux o rompiendo algo para entender cómo funciona.',
+      'Soy desarrollador web full stack: trabajo tanto del lado del cliente como del servidor. Me importa construir sistemas interoperables, eficientes, organizados y escalables, y mi objetivo es diseñar soluciones rápidas, eficientes y seguras para cada problema.',
+      'Actualmente trabajo en una empresa que prefiero mantener en privado (podés verla en mi perfil de LinkedIn), con PHP, Symfony y PostgreSQL. También disfruto trabajar con TypeScript y JavaScript en Astro, React y Angular, con Express en Node.js, y tengo conocimientos de Java con Spring Boot. Me siento cómodo en Linux y automatizo lo que hago dos veces.',
+      'Cuando no estoy programando me llegan momentos de iluminación: ideas nuevas o mejoras eficientes para algún sistema.',
     ],
     en: [
-      'I am a web developer building products where the details matter: load times, accessibility, and a codebase that will not become a liability six months in.',
-      'I mostly work with TypeScript, Astro and React on the client, and Node on the server. I am at home in the terminal, I automate anything I do twice, and I would rather solve the problem than add a dependency.',
-      'When I am not coding you will find me reading about systems, tinkering with Linux, or breaking something just to understand how it works.',
+      'I am a full stack web developer: I work on both the client and the server side. I care about building interoperable, efficient, well-organized and scalable systems, and my goal is to design fast, efficient and secure solutions to each problem.',
+      'I currently work at a company I prefer to keep private (you can find it on my LinkedIn profile), using PHP, Symfony and PostgreSQL. I also enjoy working with TypeScript and JavaScript in Astro, React and Angular, with Express on Node.js, and I have experience with Java and Spring Boot. I am at home on Linux and I automate anything I do twice.',
+      'When I am not coding I get flashes of insight: new ideas or efficient improvements for some system.',
     ],
   } satisfies Record<'es' | 'en', string[]>,
 
@@ -50,8 +50,8 @@ export const profile = {
    */
   facts: [
     { key: 'os', value: 'Linux · Windows' },
-    { key: 'editor', value: 'VS Code · Neovim' },
-    { key: 'focus', value: 'performance · a11y · DX' },
+    { key: 'editor', value: 'VS Code' },
+    { key: 'focus', value: 'soluciones eficientes · seguras · escalables' },
   ],
 
   socials: [
