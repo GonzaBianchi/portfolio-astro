@@ -31,8 +31,8 @@ export const projects: Project[] = [
     year: '2025–2026',
     featured: true,
     description: {
-      es: 'Sistema web del Ministerio de Obras Públicas de Santa Fe donde quienes reciben subsidios rinden cuentas de en qué gastaron el dinero, con facturas validadas contra ARCA y firma digital.',
-      en: 'A web system for the Santa Fe Public Works Ministry where subsidy recipients report back on what they spent the money on, with invoices checked against the tax authority and digital signatures.',
+      es: 'Sistema web provincial donde quienes reciben subsidios rinden cuentas de en qué gastaron el dinero, con facturas validadas contra ARCA y firma digital.',
+      en: 'A provincial web system where subsidy recipients report back on what they spent the money on, with invoices checked against the tax authority and digital signatures.',
     },
     image: {
       src: '/projects/comprobantes.svg',
