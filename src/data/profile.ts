@@ -49,9 +49,15 @@ export const profile = {
    * No repitas acá el stack: esa lista vive en `src/data/skills.ts`.
    */
   facts: [
-    { key: 'os', value: 'Linux · Windows' },
-    { key: 'editor', value: 'VS Code' },
-    { key: 'focus', value: 'soluciones eficientes · seguras · escalables' },
+    { key: 'os', value: { es: 'Linux · Windows', en: 'Linux · Windows' } },
+    { key: 'editor', value: { es: 'VS Code', en: 'VS Code' } },
+    {
+      key: 'focus',
+      value: {
+        es: 'soluciones eficientes · seguras · escalables',
+        en: 'efficient · secure · scalable solutions',
+      },
+    },
   ],
 
   socials: [

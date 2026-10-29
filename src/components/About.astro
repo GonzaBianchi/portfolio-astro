@@ -20,7 +20,7 @@ const paragraphs = profile.about[lang];
         profile.facts.map((f) => (
           <div class="fact">
             <dt>{f.key}</dt>
-            <dd>{f.value}</dd>
+            <dd>{pick(f.value, lang)}</dd>
           </div>
         ))
       }

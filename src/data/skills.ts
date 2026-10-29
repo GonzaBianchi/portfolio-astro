@@ -16,7 +16,7 @@ export const skills: SkillGroup[] = [
   },
   {
     title: { es: 'Back-end', en: 'Back-end' },
-    items: ['Node.js', 'Express', 'Symfony', 'Spring Boot', 'PostgreSQL', 'API REST'],
+    items: ['Node.js', 'Express', 'Symfony', 'Spring Boot', 'PostgreSQL', { es: 'API REST', en: 'REST API' }],
   },
   {
     title: { es: 'Herramientas', en: 'Tooling' },
