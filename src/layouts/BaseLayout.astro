@@ -99,6 +99,23 @@ const enHref = new URL(alternatePath(Astro.url, 'en'), canonical);
         });
       })();
     </script>
+
+    {/* Vercel Web Analytics: sin cookies. Solo en producción, porque el script
+        existe únicamente cuando el sitio corre en Vercel con Analytics activado. */}
+    {
+      import.meta.env.PROD && (
+        <>
+          <script is:inline>
+            window.va =
+              window.va ||
+              function () {
+                (window.vaq = window.vaq || []).push(arguments);
+              };
+          </script>
+          <script is:inline defer src="/_vercel/insights/script.js" />
+        </>
+      )
+    }
   </head>
 
   <body>
