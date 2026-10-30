@@ -75,6 +75,7 @@ export const projects: Project[] = [
     repo: 'https://github.com/GonzaBianchi/full-bot',
     demo: 'https://runichexcore.vercel.app',
   },
+  /* Proyectos de ejemplo, ocultos por ahora. Descomentá o reemplazá cuando tengas más.
   {
     name: 'proyecto-uno',
     year: '2025',
@@ -161,4 +162,5 @@ export const projects: Project[] = [
     tags: ['CLI', 'Bash', 'Automation'],
     repo: 'https://github.com/GonzaBianchi/proyecto-tres',
   },
+  */
 ];
