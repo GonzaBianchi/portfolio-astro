@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import { profile } from '../data/profile';
-import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
+import { getLangFromUrl, useTranslations, localizePath, pick } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -46,6 +46,10 @@ const lines = profile.terminal[lang];
         <a class="btn" href={`mailto:${profile.email}`}>
           <Icon name="mail" size={15} />
           {t('hero.cta.contact')}
+        </a>
+        <a class="btn" href={pick(profile.cv, lang)} download>
+          <Icon name="download" size={15} />
+          {t('cv.download')}
         </a>
       </div>
     </div>

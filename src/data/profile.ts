@@ -11,6 +11,12 @@ export const profile = {
   location: { es: 'Santa Fe, Argentina', en: 'Santa Fe, Argentina' } satisfies Localized,
   available: true,
 
+  /** Currículums descargables (archivos en `public/cv/`). */
+  cv: {
+    es: '/cv/CV-Gonzalo-Bianchini-ES.pdf',
+    en: '/cv/CV-Gonzalo-Bianchini-EN.pdf',
+  } satisfies Localized,
+
   /** Líneas que se tipean en la terminal del hero. */
   terminal: {
     es: [

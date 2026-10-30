@@ -28,6 +28,7 @@ export const ui = {
       'Desarrollo aplicaciones full stack, del front-end al back-end. Diseño soluciones rápidas, eficientes y seguras, con sistemas interoperables, organizados y escalables.',
     'hero.cta.projects': 'Ver proyectos',
     'hero.cta.contact': 'Contactame',
+    'cv.download': 'Descargar CV',
     'hero.status': 'disponible para proyectos',
 
     'about.title': 'Sobre mí',
@@ -78,6 +79,7 @@ export const ui = {
       'I build full stack applications, from front-end to back-end. I design fast, efficient and secure solutions, with interoperable, well-organized and scalable systems.',
     'hero.cta.projects': 'View projects',
     'hero.cta.contact': 'Get in touch',
+    'cv.download': 'Download CV',
     'hero.status': 'available for work',
 
     'about.title': 'About me',
