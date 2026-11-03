@@ -55,6 +55,13 @@ export const projects: Project[] = [
     },
     images: [
       {
+        src: '/projects/discord-bot-home.webp',
+        alt: {
+          es: 'Página de inicio del bot: avatar, nombre, botones para iniciar sesión con Discord y ver la documentación, y contadores de servidores, usuarios alcanzados y estado.',
+          en: 'Bot landing page: avatar, name, buttons to sign in with Discord and read the docs, and counters for servers, users reached and status.',
+        },
+      },
+      {
         src: '/projects/full-bot.webp',
         alt: {
           es: 'Panel de configuración de un servidor: barra lateral de secciones y formulario del sistema de XP con la barra de guardado.',
