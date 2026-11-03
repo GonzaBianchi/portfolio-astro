@@ -9,9 +9,9 @@ export type Lang = keyof typeof languages;
 
 export const ui = {
   es: {
-    'meta.title': 'Gonzalo Bianchini — Desarrollador Web',
+    'meta.title': 'Gonzalo Bianchini — Desarrollador Web Full Stack',
     'meta.description':
-      'Portfolio de Gonzalo Bianchini: desarrollador web enfocado en interfaces rápidas, accesibles y bien construidas.',
+      'Portfolio de Gonzalo Bianchini, desarrollador web full stack en Santa Fe, Argentina. Sistemas web eficientes, seguros y escalables con PHP, Symfony, TypeScript, React y Angular.',
 
     'nav.about': 'sobre-mí',
     'nav.stack': 'stack',
@@ -29,10 +29,14 @@ export const ui = {
     'hero.cta.projects': 'Ver proyectos',
     'hero.cta.contact': 'Contactame',
     'cv.download': 'Descargar CV',
-    'hero.status': 'disponible para proyectos',
+    'hero.status': 'abierto a oportunidades laborales y proyectos freelance',
 
     'about.title': 'Sobre mí',
     'about.cmd': 'cat sobre-mi.md',
+    'about.panel': 'cat formacion.txt',
+    'about.education': 'estudios',
+    'about.languages': 'idiomas',
+    'about.courses': 'cursos',
 
     'stack.title': 'Stack',
     'stack.cmd': 'ls -la ~/stack',
@@ -45,11 +49,14 @@ export const ui = {
     'projects.code': 'Código',
     'projects.demo': 'Demo',
     'projects.empty': 'Próximamente.',
+    'projects.gallery': 'Capturas',
+    'projects.prev': 'Imagen anterior',
+    'projects.next': 'Imagen siguiente',
 
     'contact.title': 'Contacto',
     'contact.cmd': './contactar.sh',
     'contact.lead':
-      '¿Tenés una idea, un proyecto o una vacante? Escribime y te respondo.',
+      '¿Tenés una vacante, un proyecto freelance o una idea? Escribime y te respondo.',
     'contact.email': 'Enviar email',
 
     'footer.built': 'Hecho con Astro y demasiado café.',
@@ -60,9 +67,9 @@ export const ui = {
     '404.home': 'Volver al inicio',
   },
   en: {
-    'meta.title': 'Gonzalo Bianchini — Web Developer',
+    'meta.title': 'Gonzalo Bianchini — Full Stack Web Developer',
     'meta.description':
-      "Gonzalo Bianchini's portfolio: web developer focused on fast, accessible, well-built interfaces.",
+      "Portfolio of Gonzalo Bianchini, full stack web developer in Santa Fe, Argentina. Efficient, secure and scalable web systems with PHP, Symfony, TypeScript, React and Angular.",
 
     'nav.about': 'about',
     'nav.stack': 'stack',
@@ -80,10 +87,14 @@ export const ui = {
     'hero.cta.projects': 'View projects',
     'hero.cta.contact': 'Get in touch',
     'cv.download': 'Download CV',
-    'hero.status': 'available for work',
+    'hero.status': 'open to job opportunities and freelance work',
 
     'about.title': 'About me',
     'about.cmd': 'cat about.md',
+    'about.panel': 'cat education.txt',
+    'about.education': 'education',
+    'about.languages': 'languages',
+    'about.courses': 'courses',
 
     'stack.title': 'Stack',
     'stack.cmd': 'ls -la ~/stack',
@@ -96,11 +107,14 @@ export const ui = {
     'projects.code': 'Code',
     'projects.demo': 'Demo',
     'projects.empty': 'Coming soon.',
+    'projects.gallery': 'Screenshots',
+    'projects.prev': 'Previous image',
+    'projects.next': 'Next image',
 
     'contact.title': 'Contact',
     'contact.cmd': './get-in-touch.sh',
     'contact.lead':
-      'Got an idea, a project or a role in mind? Drop me a line and I’ll get back to you.',
+      'Got a role, a freelance project or an idea in mind? Drop me a line and I’ll get back to you.',
     'contact.email': 'Send email',
 
     'footer.built': 'Built with Astro and too much coffee.',

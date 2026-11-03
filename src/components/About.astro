@@ -1,8 +1,9 @@
 ---
 import { profile } from '../data/profile';
-import { getLangFromUrl, pick } from '../i18n/utils';
+import { getLangFromUrl, useTranslations, pick } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 const paragraphs = profile.about[lang];
 ---
 
@@ -11,22 +12,43 @@ const paragraphs = profile.about[lang];
     {paragraphs.map((p) => <p>{p}</p>)}
   </div>
 
-  <aside class="panel" aria-label={lang === 'es' ? 'Datos' : 'Facts'}>
+  <aside class="panel" aria-label={lang === 'es' ? 'Formación' : 'Education'}>
     <p class="panel__head">
-      <span class="sigil">$</span> whoami --verbose
+      <span class="sigil">$</span> {t('about.panel')}
     </p>
     <dl class="facts">
-      {
-        profile.facts.map((f) => (
-          <div class="fact">
-            <dt>{f.key}</dt>
-            <dd>{pick(f.value, lang)}</dd>
-          </div>
-        ))
-      }
       <div class="fact">
-        <dt>location</dt>
-        <dd>{pick(profile.location, lang)}</dd>
+        <dt>{t('about.education')}</dt>
+        <dd>
+          <ul class="list">
+            {
+              profile.education.map((e) => (
+                <li>
+                  <span class="strong">{pick(e.title, lang)}</span>
+                  <span class="sub">
+                    {e.place} · {e.years}
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+        </dd>
+      </div>
+      <div class="fact">
+        <dt>{t('about.languages')}</dt>
+        <dd>
+          <ul class="list">
+            {profile.languages[lang].map((l) => <li>{l}</li>)}
+          </ul>
+        </dd>
+      </div>
+      <div class="fact">
+        <dt>{t('about.courses')}</dt>
+        <dd>
+          <ul class="list">
+            {profile.courses.map((c) => <li>{c}</li>)}
+          </ul>
+        </dd>
       </div>
     </dl>
   </aside>
@@ -102,7 +124,25 @@ const paragraphs = profile.about[lang];
 
   .fact dd {
     margin: 0;
+    flex: 1;
+    min-width: 0;
     color: var(--text-dim);
+  }
+
+  .list {
+    display: grid;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .strong {
+    display: block;
+    color: var(--text);
+  }
+  .sub {
+    display: block;
+    font-size: 0.74rem;
   }
 
   /* ---------- Estética cyber ---------- */

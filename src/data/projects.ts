@@ -10,10 +10,11 @@ export type Project = {
   /** Año o rango, se muestra junto al nombre. */
   year: string;
   /**
-   * Captura del proyecto. Poné el archivo en `public/projects/`.
+   * Capturas del proyecto; con más de una se muestra como carrusel y la
+   * primera es la principal. Poné los archivos en `public/projects/`.
    * Ratio 16:10 (800×500) para que todas midan igual.
    */
-  image?: { src: string; alt: Localized };
+  images?: { src: string; alt: Localized }[];
   /**
    * Dos o tres funcionalidades del sistema, cada una sobre un área distinta.
    * Qué hace esa parte, no qué ajustes tiene. Ni arquitectura ni tecnologías
@@ -31,32 +32,36 @@ export const projects: Project[] = [
     year: '2025–2026',
     featured: true,
     description: {
-      es: 'Sistema web provincial donde quienes reciben subsidios rinden cuentas de en qué gastaron el dinero, con facturas validadas contra ARCA y firma electrónica.',
-      en: 'A provincial web system where subsidy recipients report back on what they spent the money on, with invoices checked against the tax authority and electronic signatures.',
+      es: 'Sistema web provincial que digitalizó la rendición de cuentas de subsidios, un trámite que antes se hacía en papel. Lo usan más de 2.500 usuarios en representación de más de 900 beneficiarios (comunas, municipios, bibliotecas, bomberos, clubes), con facturas validadas contra ARCA y firma electrónica.',
+      en: 'A provincial web system that digitized subsidy expense reporting, a process that used to be done on paper. It is used by more than 2,500 users representing more than 900 beneficiaries (communes, municipalities, libraries, fire brigades, clubs), with invoices checked against the tax authority and electronic signatures.',
     },
-    image: {
-      src: '/projects/comprobantes.svg',
-      alt: {
-        es: 'Ilustración de un documento con un sello de verificación.',
-        en: 'Illustration of a document with a verification stamp.',
+    images: [
+      {
+        src: '/projects/comprobantes.svg',
+        alt: {
+          es: 'Ilustración de un documento con un sello de verificación.',
+          en: 'Illustration of a document with a verification stamp.',
+        },
       },
-    },
+    ],
     tags: ['Symfony', 'PHP', 'PostgreSQL', 'Doctrine', 'Twig', 'Bootstrap'],
   },
   {
-    name: 'full-bot',
+    name: 'discord-bot',
     year: '2025–2026',
     description: {
       es: 'Bot de Discord que da experiencia y niveles por participar en el chat, con logros, recompensas de rol y saludos de cumpleaños. Cada servidor lo configura desde su propio panel web.',
       en: 'A Discord bot that awards experience and levels for taking part in chat, with achievements, role rewards and birthday greetings. Each server configures it from its own web panel.',
     },
-    image: {
-      src: '/projects/full-bot.webp',
-      alt: {
-        es: 'Panel de configuración de un servidor: barra lateral de secciones y formulario del sistema de XP con la barra de guardado.',
-        en: 'Server settings panel: sidebar of sections and the XP system form with the save bar.',
+    images: [
+      {
+        src: '/projects/full-bot.webp',
+        alt: {
+          es: 'Panel de configuración de un servidor: barra lateral de secciones y formulario del sistema de XP con la barra de guardado.',
+          en: 'Server settings panel: sidebar of sections and the XP system form with the save bar.',
+        },
       },
-    },
+    ],
     features: [
       {
         es: 'Los usuarios suben de nivel participando en el chat, y cada servidor regula la velocidad de progresión y qué canales no cuentan.',
@@ -73,7 +78,17 @@ export const projects: Project[] = [
     ],
     tags: ['Discord.js', 'Node.js', 'React', 'MongoDB', 'Express', 'Render'],
     repo: 'https://github.com/GonzaBianchi/full-bot',
-    demo: 'https://runichexcore.vercel.app',
+    demo: 'https://gatoboludo.vercel.app/',
+  },
+  {
+    name: 'airbnb',
+    year: '2024',
+    description: {
+      es: 'Marketplace de alquileres temporarios donde los anfitriones publican sus propiedades. Proyecto en equipo del bootcamp de I2T, donde me encargué del desarrollo full stack: endpoints, servicios e integración en la interfaz.',
+      en: 'A short-term rental marketplace where hosts list their properties. A team project from the I2T bootcamp, where I handled full stack development: endpoints, services and their integration into the interface.',
+    },
+    tags: ['Angular', 'Spring Boot', 'Spring Security', 'Hibernate', 'MySQL'],
+    repo: 'https://github.com/GonzaBianchi/Airbnb',
   },
   /* Proyectos de ejemplo, ocultos por ahora. Descomentá o reemplazá cuando tengas más.
   {
@@ -83,13 +98,15 @@ export const projects: Project[] = [
       es: 'Descripción corta del proyecto: qué problema resuelve, qué construiste y cuál fue el resultado medible.',
       en: 'Short project description: what problem it solves, what you built, and the measurable outcome.',
     },
-    image: {
-      src: '/projects/proyecto-uno.svg',
-      alt: {
-        es: 'Captura de proyecto-uno: panel con métricas y gráfico de barras.',
-        en: 'Screenshot of proyecto-uno: dashboard with metrics and a bar chart.',
+    images: [
+      {
+        src: '/projects/proyecto-uno.svg',
+        alt: {
+          es: 'Captura de proyecto-uno: panel con métricas y gráfico de barras.',
+          en: 'Screenshot of proyecto-uno: dashboard with metrics and a bar chart.',
+        },
       },
-    },
+    ],
     features: [
       {
         es: 'Renderizado estático con hidratación parcial: la primera pintura no espera JavaScript.',
@@ -115,13 +132,15 @@ export const projects: Project[] = [
       es: 'Otra descripción breve. Enfocate en decisiones técnicas y en el impacto, no en la lista de tecnologías.',
       en: 'Another short description. Focus on technical decisions and impact, not on a list of technologies.',
     },
-    image: {
-      src: '/projects/proyecto-dos.svg',
-      alt: {
-        es: 'Captura de proyecto-dos: listado con filtros y detalle lateral.',
-        en: 'Screenshot of proyecto-dos: filterable list with a side detail panel.',
+    images: [
+      {
+        src: '/projects/proyecto-dos.svg',
+        alt: {
+          es: 'Captura de proyecto-dos: listado con filtros y detalle lateral.',
+          en: 'Screenshot of proyecto-dos: filterable list with a side detail panel.',
+        },
       },
-    },
+    ],
     features: [
       {
         es: 'Estado del servidor separado del estado de la interfaz: se fueron la mitad de los re-renders.',
@@ -142,13 +161,15 @@ export const projects: Project[] = [
       es: 'Un tercer proyecto para completar la lista. Podés borrar o agregar los que quieras en src/data/projects.ts.',
       en: 'A third project to round out the list. Delete or add as many as you want in src/data/projects.ts.',
     },
-    image: {
-      src: '/projects/proyecto-tres.svg',
-      alt: {
-        es: 'Captura de proyecto-tres: salida de una herramienta de línea de comandos.',
-        en: 'Screenshot of proyecto-tres: output of a command-line tool.',
+    images: [
+      {
+        src: '/projects/proyecto-tres.svg',
+        alt: {
+          es: 'Captura de proyecto-tres: salida de una herramienta de línea de comandos.',
+          en: 'Screenshot of proyecto-tres: output of a command-line tool.',
+        },
       },
-    },
+    ],
     features: [
       {
         es: 'Una sola dependencia: el resto es la librería estándar y scripts de shell.',

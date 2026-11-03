@@ -27,6 +27,8 @@ const lines = profile.terminal[lang];
         >
       </p>
 
+      <p class="where">{pick(profile.location, lang)}</p>
+
       <p class="tagline">{t('hero.tagline')}</p>
 
       {
@@ -159,10 +161,15 @@ const lines = profile.terminal[lang];
   }
 
   .role {
-    margin: 0 0 1.1rem;
+    margin: 0 0 0.25rem;
     font-size: clamp(0.95rem, 2.2vw, 1.15rem);
     font-weight: 600;
     color: var(--muted);
+  }
+  .where {
+    margin: 0 0 1.1rem;
+    font-size: 0.82rem;
+    color: var(--text-dim);
   }
   .bracket {
     color: var(--accent);

@@ -39,31 +39,44 @@ export const profile = {
 
   about: {
     es: [
-      'Soy desarrollador web full stack: trabajo tanto del lado del cliente como del servidor. Me importa construir sistemas interoperables, eficientes, organizados y escalables, y mi objetivo es diseñar soluciones rápidas, eficientes y seguras para cada problema.',
+      'Soy desarrollador web full stack: trabajo tanto del lado del cliente como del servidor. Programo desde 2023 y trabajo profesionalmente desde agosto de 2025. Me importa construir sistemas interoperables, eficientes, organizados y escalables, y mi objetivo es diseñar soluciones rápidas, eficientes y seguras para cada problema.',
       'Actualmente trabajo en el Ministerio de Obras Públicas del Gobierno de la Provincia de Santa Fe, con PHP, Symfony y PostgreSQL. También disfruto trabajar con TypeScript y JavaScript en Astro, React y Angular, con Express en Node.js, y tengo conocimientos de Java con Spring Boot. Me siento cómodo en Linux y automatizo lo que hago dos veces.',
       'Cuando no estoy programando me llegan momentos de iluminación: ideas nuevas o mejoras eficientes para algún sistema.',
     ],
     en: [
-      'I am a full stack web developer: I work on both the client and the server side. I care about building interoperable, efficient, well-organized and scalable systems, and my goal is to design fast, efficient and secure solutions to each problem.',
+      'I am a full stack web developer: I work on both the client and the server side. I have been coding since 2023 and working professionally since August 2025. I care about building interoperable, efficient, well-organized and scalable systems, and my goal is to design fast, efficient and secure solutions to each problem.',
       'I currently work at the Ministry of Public Works of the Santa Fe Provincial Government, using PHP, Symfony and PostgreSQL. I also enjoy working with TypeScript and JavaScript in Astro, React and Angular, with Express on Node.js, and I have experience with Java and Spring Boot. I am at home on Linux and I automate anything I do twice.',
       'When I am not coding I get flashes of insight: new ideas or efficient improvements for some system.',
     ],
   } satisfies Record<'es' | 'en', string[]>,
 
-  /**
-   * Datos sueltos del panel lateral de "Sobre mí".
-   * No repitas acá el stack: esa lista vive en `src/data/skills.ts`.
-   */
-  facts: [
-    { key: 'os', value: { es: 'Linux · Windows', en: 'Linux · Windows' } },
-    { key: 'editor', value: { es: 'VS Code', en: 'VS Code' } },
+  /** Panel lateral de "Sobre mí". */
+  education: [
     {
-      key: 'focus',
-      value: {
-        es: 'soluciones eficientes · seguras · escalables',
-        en: 'efficient · secure · scalable solutions',
+      title: {
+        es: 'Técnico Superior en Desarrollo de Software',
+        en: 'Higher Technical Degree in Software Development',
       },
+      place: 'Instituto de Estudios Superiores',
+      years: '2022–2024',
     },
+    {
+      title: {
+        es: 'Ingeniería en Informática (cursado parcial)',
+        en: 'Computer Engineering (coursework, not completed)',
+      },
+      place: 'Facultad de Ingeniería y Ciencias Hídricas',
+      years: '2020–2021',
+    },
+  ],
+  languages: {
+    es: ['Español (nativo)', 'Inglés (avanzado)', 'Portugués (avanzado)'],
+    en: ['Spanish (native)', 'English (advanced)', 'Portuguese (advanced)'],
+  } satisfies Record<'es' | 'en', string[]>,
+  courses: [
+    'Google IT Support (Coursera)',
+    'Node.js (Codo a Codo)',
+    'React · Next.js (I2T)',
   ],
 
   socials: [
